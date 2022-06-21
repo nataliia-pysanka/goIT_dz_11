@@ -1,24 +1,78 @@
 """
 Module describes class Record with next parameters: name, list of phones
 """
-from name import Name
-from phone import Phone
+import datetime
+
+from field import Name, Phone, Birthday
 
 
 class Record:
     """
     Class for instance Record
     """
-    def __init__(self, name: Name, phone: Phone = None):
-        self.numbers = []
+
+    def __init__(self, name: Name,
+                 phone: Phone = None,
+                 birthday: Birthday = None):
+        self._numbers = []
+        self._name = None
         self.name = name
         if phone:
-            self.numbers.append(phone)
+            self._numbers.append(phone)
+        if birthday:
+            self._birthday = birthday
+
+    @property
+    def name(self):
+        return self._name.value
+
+    @name.setter
+    def name(self, new_name: Name):
+        self._name = new_name
+
+    @property
+    def birthday(self):
+        return self._birthday.value
+
+    @property
+    def birthday_as_date_type(self):
+        return self._birthday.value_as_date_type
+
+    @birthday.setter
+    def birthday(self, new_birthday: str):
+        self._birthday = new_birthday
+
+    @property
+    def numbers(self):
+        if self._numbers is not None:
+            return self._numbers
+
+    def days_to_birthday(self):
+        birthday = self.birthday_as_date_type
+        if birthday:
+            today = datetime.datetime.now()
+            if today.month >= birthday.month and today.day > birthday.day:
+                year = today.year + 1
+            else:
+                year = today.year
+            date_birth = datetime.datetime(year=year,
+                                           month=birthday.month,
+                                           day=birthday.day)
+            date_today = datetime.datetime(year=today.year,
+                                           month=today.month,
+                                           day=today.day)
+            if year > today.year:
+                delta = date_birth - date_today
+            else:
+                delta = date_today - date_birth
+            return f'Days to birthday: {abs(delta.days)}'
 
     def __str__(self):
-        rec = '{:<6} : {:<15}'.format('Name', self.name.value) + '\n'
+        rec = '{:<8} : {:<15}'.format('Name', self.name) + '\n'
+        rec += '{:<8} : {:<15}'.format('Birthday', self.birthday) + '\n'
+        rec += '{:<8}...{:<15}'.format('........', '...............') + '\n'
         for number in self.numbers:
-            rec += '{:<6} : {:<15}'.format('Number', number.value) + '\n'
+            rec += '{:<8} : {:<15}'.format('Number', number.value) + '\n'
         return rec
 
     def append_number(self, number: Phone):
@@ -39,6 +93,7 @@ class Record:
         print(f'\t The number {number} was added \n')
         return True
 
+    @staticmethod
     def edit_number(self, edit_number: Phone, new_number: str):
         """
         Function edit Phone object
@@ -70,3 +125,18 @@ class Record:
             return True
         print(f'\t No number {del_number} in the book')
         return False
+
+
+name = 'Nataly'
+date_birth = '1986-08-27'
+phone = '0669127473'
+name = Name(name)
+phone = Name(phone)
+birth = Birthday(date_birth)
+rec = Record(name=name, phone=phone, birthday=birth)
+print(rec)
+rec.append_number(Phone('0996543212'))
+rec.append_number(Phone('0996543212'))
+rec.append_number(Phone('0996543212'))
+rec.append_number(Phone('0996543212'))
+print(rec)

@@ -1,41 +1,36 @@
 """
 Main module
 """
+from random import randint
+from datetime import datetime
+from faker import Faker
 from address_book import AddressBook
-from phone import Phone
-from name import Name
+from field import Phone, Name, Birthday
 from record import Record
 
 
+fake = Faker()
+
+
+def fake_records(book: AddressBook):
+    for i in range(50):
+        name = fake.first_name()
+        date = fake.date_between(start_date='-70y', end_date='-15y')
+        date_birth = datetime.strftime(date, '%Y-%m-%d')
+        phone = str(fake.random_number(digits=randint(10, 15)))
+        name = Name(name)
+        phone = Phone(phone)
+        birth = Birthday(date_birth)
+        rec = Record(name=name, phone=phone, birthday=birth)
+        for _ in range(2):
+            phone = str(fake.random_number(digits=randint(10, 14)))
+            rec.append_number(Phone(phone))
+        book.add_record(rec)
+    return book
+
+
 if __name__ == '__main__':
-    user_phone = Phone('08854544422')
-    user_name = Name('Nataliia')
-    user_rec = Record(user_name, user_phone)
-    print(user_rec)
-
-    user_rec.edit_number(user_phone, '04456544423')
-    print(user_rec)
-
-    user_rec.append_number('0549127473')
-    user_rec.append_number(549127473)
-    user_rec.append_number(Phone('0549127473'))
-
-    print(user_rec)
-    user_rec.delete_number('0669176473')
-    print(user_rec)
-
-    my_book = AddressBook()
-    my_book.add_record(user_rec)
-    print(my_book)
-    my_book.add_record(Record(Name('Maks'), Phone('0998765432')))
-    print(my_book)
-    user_rec.edit_number('0669127473', '0669127472')
-    print(my_book)
-
-
-# for rec in my_book:
-#     print(rec)
-
-# print(my_book.print())
-# print(my_book._records)
-
+    book = fake_records(AddressBook())
+    # print(book.print())
+    for record in book:
+        print(record)
