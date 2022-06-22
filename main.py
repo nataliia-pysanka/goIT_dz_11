@@ -23,7 +23,7 @@ def fake_records(book: AddressBook):
         birth = Birthday(date_birth)
         rec = Record(name=name, phone=phone, birthday=birth)
         for _ in range(2):
-            phone = str(fake.random_number(digits=randint(10, 14)))
+            phone = str(fake.random_number(digits=randint(11, 13)))
             rec.append_number(Phone(phone))
         book.add_record(rec)
     return book
@@ -31,6 +31,6 @@ def fake_records(book: AddressBook):
 
 if __name__ == '__main__':
     book = fake_records(AddressBook())
-    # print(book.print())
+    print("My Adress Book")
     for record in book:
         print(record)

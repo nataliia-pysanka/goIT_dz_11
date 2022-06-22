@@ -68,21 +68,23 @@ class Record:
             return f'Days to birthday: {abs(delta.days)}'
 
     def __str__(self):
-        rec = '{:<8} : {:<15}'.format('Name', self.name) + '\n'
-        rec += '{:<8} : {:<15}'.format('Birthday', self.birthday) + '\n'
-        rec += '{:<8}...{:<15}'.format('........', '...............') + '\n'
+        rec = '\t {:<8}...{:<15}'.format('........', '...............') + '\n'
+        rec += '\t {:<8} : {:<15}'.format('Name', self.name) + '\n'
+        rec += '\t {:<8} : {:<15}'.format('Birthday', self.birthday) + '\n'
+        rec += '\t {:<8}...{:<15}'.format('........', '...............') + '\n'
         for number in self.numbers:
-            rec += '{:<8} : {:<15}'.format('Number', number.value) + '\n'
+            rec += '\t {:<8} : {:<15}'.format('Number', number.value) + '\n'
+        rec += '\t {:<8}...{:<15}'.format('........', '...............') + '\n'
         return rec
 
     def append_number(self, number: Phone):
         """
         Function append new Phone object to the list of phones
         """
-        print('Adding a new number...')
+        # print('Adding a new number...')
         if not isinstance(number, Phone):
-            print('\t It should be a Phone object')
-            print("Can't add this number \n")
+            # print('\t It should be a Phone object')
+            # print("Can't add this number \n")
             return False
 
         if number in self.numbers:
@@ -90,7 +92,7 @@ class Record:
             return False
 
         self.numbers.append(number)
-        print(f'\t The number {number} was added \n')
+        # print(f'\t The number {number} was added \n')
         return True
 
     @staticmethod
